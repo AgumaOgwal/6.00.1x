@@ -239,15 +239,33 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        shiftGuess = 0
+        wordsFound = 0
+        bestShift = None
+        MAX = 26
+        bestShiftMessage = None
+        mostFound = 0
         
+        for i in range(MAX):
+            ourShift = MAX-i
+            newMessage = self.apply_shift(ourShift)
+            words = newMessage.split(' ')
+            for word in words:
+                if word in self.valid_words:
+                    wordsFound += 1
+            if wordsFound > mostFound:
+                mostFound = wordsFound
+                bestShift = ourShift
+                bestShiftMessage = " ".join(words)
+            wordsFound = 0
+                    
+        return (bestShift, bestShiftMessage)
 
 #Example test case (PlaintextMessage)
-plaintext = PlaintextMessage('hello', 2)
-print('Expected Output: jgnnq')
+plaintext = PlaintextMessage('my name is, good!', 2)
+print('Expected Output: oa pcog ku, iqqf!')
 print('Actual Output:', plaintext.get_message_text_encrypted())
     
 #Example test case (CiphertextMessage)
-ciphertext = CiphertextMessage('jgnnq')
-print('Expected Output:', (24, 'hello'))
+ciphertext = CiphertextMessage('oa pcog ku, iqqf!')
+print('Expected Output:', (24, 'my name is, good!'))
 print('Actual Output:', ciphertext.decrypt_message())
