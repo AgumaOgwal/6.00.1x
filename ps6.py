@@ -260,12 +260,21 @@ class CiphertextMessage(Message):
                     
         return (bestShift, bestShiftMessage)
 
+
+def decrypt_story():
+    story = get_story_string()
+    cipherStory = CiphertextMessage(story)
+    cleanVersion = cipherStory.decrypt_message()
+    
+    return cleanVersion
 #Example test case (PlaintextMessage)
 plaintext = PlaintextMessage('my name is, good!', 2)
-print('Expected Output: oa pcog ku, iqqf!')
-print('Actual Output:', plaintext.get_message_text_encrypted())
+#print('Expected Output: oa pcog ku, iqqf!')
+#print('Actual Output:', plaintext.get_message_text_encrypted())
     
 #Example test case (CiphertextMessage)
 ciphertext = CiphertextMessage('oa pcog ku, iqqf!')
-print('Expected Output:', (24, 'my name is, good!'))
-print('Actual Output:', ciphertext.decrypt_message())
+#print('Expected Output:', (24, 'my name is, good!'))
+#print('Actual Output:', ciphertext.decrypt_message())
+
+print(decrypt_story())
